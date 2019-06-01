@@ -1,7 +1,7 @@
 -- pass: github_client/github_secret
 INSERT INTO oauth_client_details 
 	(client_id, client_secret, scope, authorized_grant_types, authorities, access_token_validity) VALUES 
-	('github_client', '{bcrypt}$2a$10$WqcMPO5ENWSvDjC5jVe0TeRdsET/0uJf6i7JvriYOYtU/ibZKXkxG', 'GITHUB', 'password', 'ROLE_CLIENT', 300);
+	('github_client', '{bcrypt}$2a$10$WqcMPO5ENWSvDjC5jVe0TeRdsET/0uJf6i7JvriYOYtU/ibZKXkxG', 'GITHUB', 'password,refresh_token,client_credentials', 'ROLE_CLIENT', 300);
 
 -- pass: witosh/test
 INSERT INTO users 
