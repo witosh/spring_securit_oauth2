@@ -1,5 +1,7 @@
 package com.github.java.config;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +14,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
-import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
@@ -21,6 +22,9 @@ import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFacto
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
+
+	@Autowired
+	private DataSource dataSource;
 
 	@Autowired
 	private WebSecurityConfigurer webSecurityConfigurer;
@@ -33,12 +37,12 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
 	@Override
 	public void configure(final ClientDetailsServiceConfigurer clients) throws Exception {
-		clients.jdbc(this.webSecurityConfigurer.getDataSource());
+		clients.jdbc(dataSource);
 	}
 
 	@Override
 	public void configure(final AuthorizationServerSecurityConfigurer oauthServer) {
-		oauthServer.passwordEncoder(this.webSecurityConfigurer.passwordEncoder()).tokenKeyAccess("permitAll()")
+		oauthServer.passwordEncoder(webSecurityConfigurer.passwordEncoder()).tokenKeyAccess("permitAll()")
 				.checkTokenAccess("isAuthenticated()");
 	}
 
@@ -49,8 +53,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 	}
 
 	@Bean
-	public DefaultTokenServices tokenServices(final TokenStore tokenStore,
-			final ClientDetailsService clientDetailsService) {
+	public DefaultTokenServices tokenServices(TokenStore tokenStore, ClientDetailsService clientDetailsService) {
 		DefaultTokenServices tokenServices = new DefaultTokenServices();
 		tokenServices.setSupportRefreshToken(true);
 		tokenServices.setTokenStore(tokenStore);
@@ -71,9 +74,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
 	@Bean
 	public TokenStore tokenStore() {
-		if (tokenStore == null) {
-			tokenStore = new JwtTokenStore(jwtAccessTokenConverter());
-		}
+		tokenStore = new JwtTokenStore(jwtAccessTokenConverter());
 		return tokenStore;
 	}
 

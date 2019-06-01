@@ -44,22 +44,14 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		if (this.passwordEncrypt == null) {
-			this.passwordEncrypt = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-		}
+		passwordEncrypt = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 		return passwordEncrypt;
 	}
 
 	@Bean
 	public UserDetailsService userDetailsService() {
-		if (userDetailsService == null) {
-			userDetailsService = new JdbcDaoImpl();
-			((JdbcDaoImpl) userDetailsService).setDataSource(dataSource);
-		}
+		userDetailsService = new JdbcDaoImpl();
+		((JdbcDaoImpl) userDetailsService).setDataSource(dataSource);
 		return userDetailsService;
-	}
-
-	public DataSource getDataSource() {
-		return dataSource;
 	}
 }

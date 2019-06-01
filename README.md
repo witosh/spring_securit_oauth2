@@ -66,3 +66,8 @@ create table authorities (
 [Spring Security 5 docs](https://docs.spring.io/spring-security/site/docs/5.2.0.BUILD-SNAPSHOT/reference/htmlsingle/#spring-security-web)
 
 ## Configuration of 
+
+
+Needed links:
+
+https://www.blitter.se/utils/basic-authentication-header-generator/

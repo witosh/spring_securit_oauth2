@@ -1,11 +1,13 @@
--- The encrypted client_secret it `secret`
+-- pass: github_client/github_secret
 INSERT INTO oauth_client_details 
-	(client_id, client_secret, scope, authorized_grant_types, authorities, access_token_validity)
-  		VALUES ('github_client', '{bcrypt}$2a$10$vCXMWCn7fDZWOcLnIEhmK.74dvK1Eh8ae2WrWlhr2ETPLoxQctN4.', 'GITHUB', 'password', 'ROLE_CLIENT', 300);
+	(client_id, client_secret, scope, authorized_grant_types, authorities, access_token_validity) VALUES 
+	('github_client', '{bcrypt}$2a$10$WqcMPO5ENWSvDjC5jVe0TeRdsET/0uJf6i7JvriYOYtU/ibZKXkxG', 'GITHUB', 'password', 'ROLE_CLIENT', 300);
 
--- The encrypted password is `pass`
-INSERT INTO users (id, username, password, enabled) VALUES (1, 'user', '{bcrypt}$2a$10$cyf5NfobcruKQ8XGjUJkEegr9ZWFqaea6vjpXWEaSqTa2xL9wjgQC', 1);
---INSERT INTO users (id, username, password, enabled) VALUES (2, 'guest', '{bcrypt}$2a$10$cyf5NfobcruKQ8XGjUJkEegr9ZWFqaea6vjpXWEaSqTa2xL9wjgQC', 1);
+-- pass: witosh/test
+INSERT INTO users 
+	(id, username, password, enabled) VALUES 
+		(1, 'witosh', '{bcrypt}$2a$10$yk.31eiE8o8mWf/A6z70LeFXb0FslQpb4C/suYgCJIzD1gc0UBDJu', 1);
 
-INSERT INTO authorities (username, authority) VALUES ('user', 'ROLE_USER');
---INSERT INTO authorities (username, authority) VALUES ('guest', 'ROLE_GUEST');
+INSERT INTO authorities 
+	(username, authority) VALUES 
+		('witosh', 'ROLE_USER');
