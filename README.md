@@ -4,30 +4,36 @@
 
 ### Run project
 It's Spring Boot project so it simply use plugin goal:
- - ```spring-boot:run```
+ - ```mvn spring-boot:run```
 
 If you don't have Postman just install it from [here](https://www.getpostman.com/downloads/).
 
  - create ***POST*** request on [localhost:8080/oauth/token](localhost:8080/oauth/token) address,
  - another step is pass basic authentication by client credentials in ***Headers*** tab:
- 	-- client_id: github_client
- 	-- cliente_secret: github_secret
+ ```	 
+ 	 client_id: github_client
+ 	 cliente_secret: github_secret
+```
  	You can use [bsic authentication generator](https://www.blitter.se/utils/basic-authentication-header-generator/) for that
 
  ![It should be look like this.](https://user-images.githubusercontent.com/14622491/58766142-7f9d5600-857b-11e9-99c0-a845b4f9661d.png)
 
  - fulfill ***PARAMS*** tab with:
- 	-- client_id: github_client
-	-- client_secret: github_secret
-	-- grant_type: password
-	-- username: witosh
-	-- password: test 
+ ```	 client_id: github_client
+	 client_secret: github_secret
+	 grant_type: password
+	 username: witosh
+	 password: test 
+```
 
 ![Params of POST request](https://user-images.githubusercontent.com/14622491/58766016-f20d3680-8579-11e9-8b38-27605b0a2ba9.png)
 
  - Send ***POST*** request:
 
  ![Authorization success](https://user-images.githubusercontent.com/14622491/58766151-9643ad00-857b-11e9-9986-efb560cdcbc4.png)
+
+
+## Implementation of main classes for OAuth2
 
 
 ## Provide Spring Security configuration by WebSecurityConfigurerAdapter
