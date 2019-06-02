@@ -23,6 +23,12 @@ If you don't have Postman just install it from [here](https://www.getpostman.com
 	-- username: witosh
 	-- password: test 
 
+![Params of POST request](https://user-images.githubusercontent.com/14622491/58766016-f20d3680-8579-11e9-8b38-27605b0a2ba9.png)
+
+ - Send ***POST*** request:
+
+ ![Authorization success](https://user-images.githubusercontent.com/14622491/58766151-9643ad00-857b-11e9-9986-efb560cdcbc4.png)
+
 
 ## Provide Spring Security configuration by WebSecurityConfigurerAdapter
 
