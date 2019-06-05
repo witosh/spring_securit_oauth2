@@ -1,8 +1,12 @@
 package com.github.java.config;
 
+import java.awt.Toolkit;
+import java.util.Arrays;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -14,6 +18,8 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
@@ -23,9 +29,12 @@ import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFacto
 @EnableAuthorizationServer
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
+	@Value("${security.oauth2.resource.jwt.key-value}")
+	String signKey;
+	
 	@Autowired
 	private DataSource dataSource;
-
+	
 	@Autowired
 	private WebSecurityConfigurer webSecurityConfigurer;
 
@@ -33,6 +42,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 	private AuthenticationManager authenticationManager;
 
 	private JwtAccessTokenConverter jwtAccessTokenConverter;
+	
 	private TokenStore tokenStore;
 
 	@Override
@@ -48,8 +58,13 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
 	@Override
 	public void configure(final AuthorizationServerEndpointsConfigurer endpoints) {
-		endpoints.authenticationManager(this.authenticationManager).accessTokenConverter(jwtAccessTokenConverter())
-				.tokenStore(tokenStore());
+		TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+		tokenEnhancerChain.setTokenEnhancers(Arrays.asList(tokenEnhancer(),jwtAccessTokenConverter()));
+		
+		endpoints.authenticationManager(this.authenticationManager)
+				 .accessTokenConverter(jwtAccessTokenConverter())
+				 .tokenStore(tokenStore())
+				 .tokenEnhancer(tokenEnhancerChain);
 	}
 
 	@Bean
@@ -64,11 +79,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
 	@Bean
 	public JwtAccessTokenConverter jwtAccessTokenConverter() {
-		KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("mykeystore.jks"),
-				"adminadmin".toCharArray());
-
 		jwtAccessTokenConverter = new JwtAccessTokenConverter();
-		jwtAccessTokenConverter.setKeyPair(keyStoreKeyFactory.getKeyPair("servercert"));
+		jwtAccessTokenConverter.setSigningKey(signKey);
 		return jwtAccessTokenConverter;
 	}
 
@@ -78,4 +90,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 		return tokenStore;
 	}
 
+	@Bean
+	public TokenEnhancer tokenEnhancer() {
+		return new CustomTokenEnhancer();
+	}
 }
