@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ResourceContoller {
 
 	@GetMapping("/hasscope")
-    @PreAuthorize("hasScope('GITHUB')")
+    @PreAuthorize("#oauth2.isOAuth() and #oauth2.hasScope('GITHUB') or #oauth2.hasScope('ROLE')")
     public String helloScope(final Principal principal) {
         return "Hello";
     }
