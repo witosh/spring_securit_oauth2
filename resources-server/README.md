@@ -14,3 +14,4 @@ In this class I add ***@EnableGlobalMethodSecurity(prePostEnabled = true)*** ann
 ```java
 @PreAuthorize("#oauth2.isOAuth() and #oauth2.hasScope('GITHUB') or #oauth2.hasScope('GIT')")
 ```
+This annotation evaluate condition expression before it start execute method. In  ***@PostAuthorize*** annotation it start execute command and the evaluate expression but if condition doesn't meet condition could alter result of the method.
