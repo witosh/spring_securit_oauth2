@@ -5,9 +5,4 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class OauthController {
-	
-	@GetMapping("/hello")
-	public String hello() {
-		return "HelloWrold !!!";
-	}
 }
