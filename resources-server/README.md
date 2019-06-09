@@ -6,6 +6,25 @@ In this section I would like to show configuration of two main classes:
 
 ## Provide Spring Security configuration by ResourceServerConfigurer
 
+In this part of implementation I add ***@EnableResourceServer*** annotation which says that componenta will be treated as a resource server. All upcomming request must be authentiacted by access token. All configuration containing 
+```java
+public TokenStore tokenStore()
+```
+```java
+public DefaultTokenServices tokenServices(final TokenStore tokenStore)
+```
+```java
+public JwtAccessTokenConverter jwtAccessTokenConverter()
+```
+
+is the same as in [OAuth2 project)[https://github.com/witosh/OAuth2/tree/master/oauth2-server].
+
+Thanks to extending out confuiguration class by ***ResourceServerConfigurerAdapter*** we can customize configuration by overrides metod such as:
+```java
+public void configure(HttpSecurity http) throws Exception
+```
+and we allow to process method request sucha a ***POST*** and ***GET***.
+
 ## Provide Spring Security configuration by MethodSecurityConfig
 
 For successful configured ***resource server*** we should think about access controll to the used endpoints in this service. With help comes following configuration ***resource method-level***.
